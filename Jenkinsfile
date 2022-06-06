@@ -1,12 +1,19 @@
 node {
-
-    checkout scm
-
-    docker.withRegistry('https://registry.hub.docker.com', 'dockercred') {
-
-        def customImage = docker.build("avinashbasoorbs/dockerwebapp")
-
-        /* Push the container to the custom Registry */
-        customImage.push()
+     def app 
+     stage('clone repository') {
+      checkout scm  
     }
+     stage('Build docker Image'){
+      app = docker.build("avinashbasoor12/dockercred")
+    }
+     stage('Test Image'){
+       app.inside {
+         sh 'echo "TEST PASSED"'
+      }  
+    }
+     stage('Push Image'){
+       docker.withRegistry('https://registry.hub.docker.com', 'git') {            
+       app.push("${env.BUILD_NUMBER}")            
+       app.push("latest")   
+   }
 }
