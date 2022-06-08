@@ -1,5 +1,6 @@
 FROM node:16
 
+# small changes to check the merge operation
 # Create app directory
 WORKDIR /usr/src/app
 
